@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import Form from "../components/Home/Form";
-import TestsTable from "../components/Home/TestsTable";
+import Form from '../components/Home/Form'
+import TestsTable from '../components/Home/TestsTable'
 export default {
-  methods: {
-   
+  data () {
+    return {
+    }
   },
   components: {
     Form,
     TestsTable
   }
-
-};
+}
 </script>
