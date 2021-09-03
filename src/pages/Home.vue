@@ -1,6 +1,13 @@
 <template>
   <div class="container pt-2">
-    <Form></Form>
+    <div v-if="!isNotConnected">
+      <Form></Form>
+      <TestsTable @noConnection="onNoConnection()"/>
+    </div>
+
+    <div v-if="isNotConnected" class="alert alert-danger" role="alert">
+      Opps... Something went wrong!
+    </div>
   </div>
 </template>
 
@@ -10,6 +17,12 @@ import TestsTable from '../components/Home/TestsTable'
 export default {
   data () {
     return {
+      isNotConnected: false
+    }
+  },
+  methods: {
+    onNoConnection () {
+      this.isNotConnected = true
     }
   },
   components: {
