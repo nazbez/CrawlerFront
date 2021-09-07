@@ -1,4 +1,4 @@
-<<template>
+<template>
 <div>
   <div class="border-bottom mb-5">
       <h1 class="h2">{{details.url}}</h1>

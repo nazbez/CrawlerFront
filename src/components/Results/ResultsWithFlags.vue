@@ -44,7 +44,7 @@ export default {
       .then((response) => response.json())
       .then((response) => {
         this.results = response.results.filter(
-          (x) => x.inHtml == this.inHtml && x.inSitemap != this.inHtml
+          (x) => x.inHtml == this.inHtml && x.inSitemap == !this.inHtml
         );
         this.rows = this.results.length;
       });
