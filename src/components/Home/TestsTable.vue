@@ -1,65 +1,105 @@
 <template>
-<div>
-  <div class="border-bottom mb-5">
-      <h1 class="h2">{{details.url}}</h1>
+  <div class="text-center mt-5">
+    <h1 class="h2">Test results</h1>
+
+    <b-table
+      id="my-table"
+      :fields="fields"
+      :items="tests"
+      responsive="sm"
+      head-row-variant="dark"
+      bordered
+      striped
+    >
+      <template #cell(id)="data">
+        {{ data.item.id }}
+      </template>
+
+      <template #cell(website)="data">
+        {{ data.item.url }}
+      </template>
+
+      <template #cell(date)="data">
+        {{  data.item.saveTime}}
+      </template>
+
+      <template #cell(details)="data">
+        <router-link :to="{ name: 'TestResult', params: { id: data.item.id } }">
+          <a>see details</a>
+        </router-link>
+      </template>
+    </b-table>
+
+    <nav style="margin: auto">
+      <ul class="pagination">
+        <li class="page-item">
+          <button
+            class="page-link"
+            aria-label="Previous"
+            @click="loadPage(currentPage - 1)"
+          >
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </button>
+        </li>
+        <li class="page-item">
+          <button
+            class="page-link"
+            aria-label="Next"
+            @click="loadPage(currentPage + 1)"
+          >
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </button>
+        </li>
+      </ul>
+      <h4>{{ currentPage }} of {{ totalPages }}</h4>
+    </nav>
   </div>
-  <h2 class="h2">PERFORMANCE</h2>
-  <div >
-        <b-table :items="details.results" 
-        :fields="fields"
-        responsive="sm"
-        head-row-variant="dark"
-        bordered
-        striped
-        >
-            <template #cell(url)="data">
-                {{ data.item.url }}
-            </template>
-
-            <template #cell(responseTime)="data">
-                {{ data.item.responseTime }}
-            </template>
-        </b-table>
-    </div>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="pageSize"
-      @change="loadDetails"
-      align="center"
-      size="lg"
-      pills>
-    ></b-pagination>
-</div>
-
 </template>
 
 <script>
-  export default {
-      props:['id'],
-    data () {
-      return {
-        fields: [
-          'url',
-          { key: 'responseTime', label: 'Timing', class: 'text-center' },
-        ],
-        currentPage:1,
-        rows:0,
-        pageSize:10,
-        details:{}
+export default {
+  data() {
+    return {
+      tests: [],
+      pageSize: 10,
+      currentPage: 1,
+      totalPages: 0,
+      fields: ["id", "website", "date", { key: "details", label: "More info" }],
+    };
+  },
+  methods: {
+    loadPage(newPage) {
+      if (newPage < 1) {
+        this.currentPage = 1;
+      } else if (newPage > this.totalPages) {
+        this.currentPage = this.totalPages;
+      } else {
+        this.currentPage = newPage;
       }
+
+      this.$resource(
+        "Tests?PageNumber=" + this.currentPage + "&PageSize=" + this.pageSize
+      )
+        .get()
+        .then((response) => response.json())
+        .then((response) => {
+          this.tests = response.tests;
+          this.totalPages = response.pageInfo.totalPages;
+        });
     },
-    
-    methods:{
-    loadDetails (newPage) {
-        this.$resource('Tests/'+this.id+'?InSitemap=true&InWebsite=true'+'&Page='+newPage+'&PageSize='+this.pageSize).get().then(response => response.json())
-          .then(details => this.details=details.result)
-      },
-    },
-    created () {
-        this.$resource('Tests/'+ this.id+'/count').get().then(response => response.json())
-          .then(count => this.rows=count.result)
-        this.loadDetails(1)
-    }
-  }
+  },
+  created() {
+    this.$resource(
+      "Tests?PageNumber=" + this.currentPage + "&PageSize=" + this.pageSize
+    )
+      .get()
+      .then((response) => response.json())
+      .then((response) => {
+        this.tests = response.tests;
+        this.totalPages = response.pageInfo.totalPages;
+      });
+  },
+};
 </script>
