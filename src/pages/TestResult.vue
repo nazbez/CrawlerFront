@@ -1,9 +1,9 @@
 <template>
   <div class="mt-5">
     <div class="mt-3">
-        <form action="/" target="_blank">
-            <button class="btn btn-dark">Come to tests</button>
-        </form>
+        <button class="btn btn-dark">
+          <a style="text-decoration: none; color:white" href="http://localhost:8080">Come to tests</a>
+        </button>
     </div>
     <ResultsWithTime class="mt-5" :id="id"></ResultsWithTime>
     <ResultsWithFlags
