@@ -61,7 +61,7 @@ export default {
         .save({}, userInput)
         .then((response) => response.json())
         .then((response) => {
-          if (response.error != "") {
+          if (!response.isSuccessful) {
             console.log(response.error);
             this.error = response.error;
             alert(this.error);

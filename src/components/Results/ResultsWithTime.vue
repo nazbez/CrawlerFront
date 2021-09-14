@@ -59,7 +59,7 @@ export default {
       .get()
       .then((response) => response.json())
       .then((response) => {
-        this.details = response;
+        this.details = response.object;
         this.rows = this.details.results.length;
       });
   },

@@ -85,8 +85,8 @@ export default {
         .get()
         .then((response) => response.json())
         .then((response) => {
-          this.tests = response.tests;
-          this.totalPages = response.pageInfo.totalPages;
+          this.tests = response.object.tests;
+          this.totalPages = response.object.pageInfo.totalPages;
         });
     },
   },
@@ -97,8 +97,8 @@ export default {
       .get()
       .then((response) => response.json())
       .then((response) => {
-        this.tests = response.tests;
-        this.totalPages = response.pageInfo.totalPages;
+        this.tests = response.object.tests;
+        this.totalPages = response.object.pageInfo.totalPages;
       });
   },
 };
