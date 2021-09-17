@@ -1,6 +1,6 @@
 <template>
   <div class="container pt-2">
-    <form class="pt-3" @submit.prevent="onSubmit" autocomplete="off">
+    <form class="pt-3" @submit.prevent="createTest" autocomplete="off">
       <div class="form-group">
         <label for="url">Url</label>
         <input
@@ -73,9 +73,6 @@ export default {
           this.testRunning = false;
           this.url = "";
         });
-    },
-    onSubmit() {
-      this.createTest();
     },
   },
   created() {

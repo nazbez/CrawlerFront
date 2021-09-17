@@ -43,10 +43,12 @@ export default {
       .get()
       .then((response) => response.json())
       .then((response) => {
-        this.results = response.object.results.filter(
-          (x) => x.inHtml == this.inHtml && x.inSitemap == !this.inHtml
-        );
-        this.rows = this.results.length;
+        if (response.object.results) {
+          this.results = response.object.results.filter(
+            (x) => x.inHtml == this.inHtml && x.inSitemap == !this.inHtml
+          );
+          this.rows = this.results.length;
+        }
       });
   },
 };

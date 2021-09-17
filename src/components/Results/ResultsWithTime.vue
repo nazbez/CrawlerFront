@@ -1,11 +1,12 @@
 <template>
-<div>
-  <div class="border-bottom mb-5">
-      <h1 class="h2">{{details.url}}</h1>
-  </div>
-  <h2 class="h2">PERFORMANCE</h2>
-  <div >
-        <b-table :items="details.results" 
+  <div>
+    <div class="border-bottom mb-5">
+      <h1 class="h2">{{ details.url }}</h1>
+    </div>
+    <h2 class="h2">PERFORMANCE</h2>
+    <div>
+      <b-table
+        :items="details.results"
         id="my-table"
         :fields="fields"
         responsive="sm"
@@ -15,28 +16,30 @@
         head-row-variant="dark"
         bordered
         striped
-        >
-            <template #cell(url)="data">
-                {{ data.item.url }}
-            </template>
+      >
+        <template #cell(url)="data">
+          <template v-if="data.item.url">
+            {{ data.item.url }}
+          </template>
+        </template>
 
-            <template #cell(responseTime)="data">
-                {{ data.item.responseTime }}
-            </template>
-        </b-table>
+        <template #cell(responseTime)="data">
+          <template v-if="data.item.responseTime">
+            {{ data.item.responseTime }}
+          </template>
+        </template>
+      </b-table>
 
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="rows"
-          :per-page="perPage"
-          aria-controls="my-table"
-          align="center"
-          size="lg"
-        ></b-pagination>
-
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-table"
+        align="center"
+        size="lg"
+      ></b-pagination>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>

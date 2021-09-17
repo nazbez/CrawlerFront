@@ -12,15 +12,21 @@
       striped
     >
       <template #cell(id)="data">
-        {{ data.item.id }}
+        <template v-if="data.item.id">
+          {{ data.item.id }}
+        </template>
       </template>
 
       <template #cell(website)="data">
-        {{ data.item.url }}
+        <template v-if="data.item.url">
+          {{ data.item.url }}
+        </template>
       </template>
 
       <template #cell(date)="data">
-        {{  data.item.saveTime}}
+        <template v-if="data.item.saveTime">
+          {{ data.item.saveTime }}
+        </template>
       </template>
 
       <template #cell(details)="data">
@@ -37,6 +43,7 @@
             class="page-link"
             aria-label="Previous"
             @click="loadPage(currentPage - 1)"
+            :disabled="currentPage == 1"
           >
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
@@ -47,6 +54,7 @@
             class="page-link"
             aria-label="Next"
             @click="loadPage(currentPage + 1)"
+            :disabled="currentPage == totalPages"
           >
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
@@ -65,7 +73,7 @@ export default {
       tests: [],
       pageSize: 10,
       currentPage: 1,
-      totalPages: 0,
+      totalPages: 1,
       fields: ["id", "website", "date", { key: "details", label: "More info" }],
     };
   },
@@ -79,6 +87,9 @@ export default {
         this.currentPage = newPage;
       }
 
+      this.getResponse();
+    },
+    getResponse() {
       this.$resource(
         "Tests?PageNumber=" + this.currentPage + "&PageSize=" + this.pageSize
       )
@@ -91,15 +102,7 @@ export default {
     },
   },
   created() {
-    this.$resource(
-      "Tests?PageNumber=" + this.currentPage + "&PageSize=" + this.pageSize
-    )
-      .get()
-      .then((response) => response.json())
-      .then((response) => {
-        this.tests = response.object.tests;
-        this.totalPages = response.object.pageInfo.totalPages;
-      });
+    this.getResponse();
   },
 };
 </script>
